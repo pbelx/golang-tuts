@@ -22,15 +22,17 @@ func main() {
 	3 gets local ip
 	4 gets tcp connections
 	5 gets open tcp ports
+	6 check socks proxy
 	0 Exit stage Left `
 		print(menu)
 
 		//konsole commands
-		pingc := "ping -c 2 8.8.8.8"                        //2 check if online ?
-		ifc := "/sbin/ifconfig | grep inet | grep -v inet6" //3 interface ips
-		ntcp := "ss -ant"                                   //4 tcp connections
-		getip := "curl ifconfig.io -v"                      //1 external ip
-		getports := "netstat -antp | grep TEN"              //open port ss -ltp
+		pingc := "ping -c 2 8.8.8.8"                           //2 check if online ?
+		ifc := "/sbin/ifconfig | grep inet | grep -v inet6"    //3 interface ips
+		ntcp := "ss -ant"                                      //4 tcp connections
+		getip := "curl ifconfig.io -v"                         //1 external ip
+		getports := "netstat -antp | grep TEN"                 //open port ss -ltp
+		sokcheck := "curl --socks5 127.0.0.1:1080 ifconfig.io" //check socks proxy
 
 		//getinput
 
@@ -52,6 +54,8 @@ func main() {
 			roll(ntcp)
 		case "5":
 			roll(getports)
+		case "6":
+			rollerr(sokcheck)
 		case "0":
 			print(`
 		Follow the white Rabbit`)
@@ -83,7 +87,7 @@ func roll(command string) {
 	clear()
 	cmd, _ := exec.Command("bash", "-c", command).Output()
 	fmt.Println(`
-	*********
+	************
 	Matrix REply
 	************`)
 	fmt.Println(string(cmd))
@@ -92,10 +96,17 @@ func roll(command string) {
 //kommands exec with err returned
 
 func rollerr(command string) {
-	_, err := exec.Command("bash", "-c", command).Output()
+	clear()
+	fmt.Println(`
+	************
+	Matrix REply
+	************`)
+	cmd, err := exec.Command("bash", "-c", command).Output()
 	if err != nil {
 		print("Failed mission")
+		fmt.Println(err)
 	} else {
 		print("w00t success achieved")
+		fmt.Println(string(cmd))
 	}
 }
