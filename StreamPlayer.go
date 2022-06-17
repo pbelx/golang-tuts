@@ -1,5 +1,5 @@
 package main
-
+//play mp3 stream given url args
 import (
 	"fmt"
 	"io"
@@ -14,14 +14,10 @@ import (
 
 func run() error {
 
-	// musicfile := os.Args[1]
+	
 
 	fmt.Println("Music server starting")
-	// f, err := os.Open(musicfile)
-	// if err != nil {
-	// 	return err
-	// }
-	// defer f.Close()
+
 
 	musicurl := os.Args[1]
 	resp, _ := http.Get(musicurl)
